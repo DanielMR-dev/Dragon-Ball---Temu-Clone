@@ -13,12 +13,25 @@ const products = [
   { id: 6, name: "Fitness Tracker", price: 34.99, image: "/placeholder.svg?height=200&width=200" },
 ]
 
-function LoginModal({ isOpen, onClose }) {
+interface LoginModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+function LoginModal({ isOpen, onClose }: LoginModalProps) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const handleSubmit = (e) => {
+  const handleSubmit =async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+
+    const response = await fetch('http://localhost:5000/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    })
     // Here you would typically handle the login logic
     console.log('Login attempted with:', email, password)
     // For now, we'll just close the modal
